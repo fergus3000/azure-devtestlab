@@ -65,6 +65,7 @@
     },
     "variables": {
         "quickstartRepoRoot": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/",
+        "quickstartRepoRoot2": "https://raw.githubusercontent.com/Azure-Samples/master/service-fabric-cluster-templates/",
         "clusterName": "[concat('sf-', toLower(uniqueString(resourceGroup().name)))]",
         "vaultName": "[concat('kv-', toLower(uniqueString(resourceGroup().name)))]",
         "vaultSecret": "ClusterCertificate",
@@ -173,7 +174,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('quickstartRepoRoot'), 'service-fabric-secure-cluster-ubuntu-5-node-1-nodetype/azuredeploy.json')]",
+                    "uri": "[concat(variables('quickstartRepoRoot2'), '5-VM-Ubuntu-1-NodeTypes-Secure/azuredeploy.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
