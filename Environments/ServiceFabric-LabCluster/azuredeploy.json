@@ -213,9 +213,6 @@
                     },
                     "nt0InstanceCount": {
                         "value": "[variables('nt0InstanceCount')]"
-                    },
-                    "nodeDataDrive": {
-                        "value": "OS"
                     }
                 }
             }
