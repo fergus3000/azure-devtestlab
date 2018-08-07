@@ -178,9 +178,6 @@
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
-                    "clusterDnsName": {
-                        "value": "[variables('clusterName')]"
-                    },
                     "adminUsername": {
                         "value": "[parameters('adminUsername')]"
                     },
