@@ -13,6 +13,17 @@
                 "description": "Select the cluster OS."
             }
         },
+        "clusterLocation": {
+            "type": "string",
+            "allowedValues": [
+                "westus",
+                "westeurope"
+            ],
+            "defaultValue": "westeurope",
+            "metadata": {
+                "description": "Select the cluster location."
+            }
+        },
         "adminUsername": {
             "type": "string",
             "minLength": 1,
@@ -122,7 +133,7 @@
                         "value": "[variables('clusterName')]"
                     },
                     "clusterLocation": {
-                        "value": "westeurope"
+                        "value": "[parameters('clusterLocation')]"
                     },
                     "adminUsername": {
                         "value": "[parameters('adminUsername')]"
@@ -183,6 +194,9 @@
                 "parameters": {
                     "clusterName": {
                         "value": "[variables('clusterName')]"
+                    },
+                    "clusterLocation": {
+                        "value": "[parameters('clusterLocation')]"
                     },
                     "adminUsername": {
                         "value": "[parameters('adminUsername')]"
