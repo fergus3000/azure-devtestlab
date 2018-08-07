@@ -121,6 +121,9 @@
                     "clusterName": {
                         "value": "[variables('clusterName')]"
                     },
+                    "clusterLocation": {
+                        "value": "westeurope"
+                    },
                     "adminUsername": {
                         "value": "[parameters('adminUsername')]"
                     },
