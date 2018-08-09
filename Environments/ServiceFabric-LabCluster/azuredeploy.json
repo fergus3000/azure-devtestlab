@@ -201,7 +201,7 @@
                 },
                 "parameters": {
                     "clusterName": {
-                        "value": "[variables('clusterName')]"
+                        "value": "[parameters('clusterName')]"
                     },
                     "clusterLocation": {
                         "value": "[parameters('clusterLocation')]"
