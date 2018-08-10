@@ -437,18 +437,6 @@
               "frontendPortRangeStart": "3389",
               "protocol": "tcp"
             }
-          },
-          {
-            "name": "LoadBalancerBEAddressNatPool2",
-            "properties": {
-              "backendPort": "5986",
-              "frontendIPConfiguration": {
-                "id": "[variables('lbIPConfig0')]"
-              },
-              "frontendPortRangeEnd": "6000",
-              "frontendPortRangeStart": "5986",
-              "protocol": "tcp"
-            }
           }
         ]
       },
