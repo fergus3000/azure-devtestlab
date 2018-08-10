@@ -160,6 +160,7 @@
       "lbProbeID0": "[concat(variables('lbID0'),'/probes/FabricGatewayProbe')]",
       "lbHttpProbeID0": "[concat(variables('lbID0'),'/probes/FabricHttpGatewayProbe')]",
       "lbNatPoolID0": "[concat(variables('lbID0'),'/inboundNatPools/LoadBalancerBEAddressNatPool')]",
+      "lbNatPoolID1": "[concat(variables('lbID0'),'/inboundNatPools/LoadBalancerBEAddressNatPool2')]",
       "vmNodeType0Name": "[toLower(concat('NT1', variables('vmName')))]",
       "vmNodeType0Size": "[parameters('nodeTypeSize')]"
     },
@@ -524,6 +525,9 @@
                           "loadBalancerInboundNatPools": [
                             {
                               "id": "[variables('lbNatPoolID0')]"
+                            },
+                            {
+                              "id": "[variables('lbNatPoolID1')]"
                             }
                           ],
                           "subnet": {
