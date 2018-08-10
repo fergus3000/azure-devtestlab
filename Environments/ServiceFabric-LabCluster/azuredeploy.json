@@ -140,9 +140,6 @@
                     "clusterName": {
                         "value": "[variables('clusterName')]"
                     },
-                    "clusterLocation": {
-                        "value": "[parameters('clusterLocation')]"
-                    },
                     "adminUsername": {
                         "value": "[parameters('adminUsername')]"
                     },
