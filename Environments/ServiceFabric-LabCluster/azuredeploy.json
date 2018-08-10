@@ -133,7 +133,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('quickstartRepoRoot'), 'service-fabric-secure-cluster-5-node-1-nodetype/azuredeploy.json')]",
+                    "uri": "https://raw.githubusercontent.com/Azure-Samples/service-fabric-cluster-templates/master/5-VM-Ubuntu-1-NodeTypes-Secure/AzureDeploy.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -196,7 +196,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/5-VM-Ubuntu-1-NodeTypes-Secure/AzureDeploy.json",
+                    "uri": "https://raw.githubusercontent.com/Azure-Samples/service-fabric-cluster-templates/master/5-VM-Ubuntu-1-NodeTypes-Secure/AzureDeploy.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
