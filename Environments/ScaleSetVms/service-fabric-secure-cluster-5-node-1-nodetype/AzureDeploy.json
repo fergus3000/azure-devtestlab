@@ -507,20 +507,25 @@
                   }
                 },
                 {
-                  "name": "RunHello",
+                  "type": "extensions",
+                  "name": "CustomScriptExtension",
+                  "apiVersion": "2017-03-30",
+                  "location": "[parameters('location')]",
+                  "dependsOn": [
+                    "[variables('vmName')]"
+                  ],
                   "properties": {
-                    "publisher": "Microsoft.Azure.Extensions",
-                    "type": "CustomScript",
-                    "typeHandlerVersion": "2.0",
+                    "publisher": "Microsoft.Compute",
+                    "type": "CustomScriptExtension",
+                    "typeHandlerVersion": "1.8",
                     "autoUpgradeMinorVersion": true,
                     "settings": {
                       "fileUris": [
-                        "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/hello.ps1"
                       ],
-                      "commandToExecute": "hello.ps1"
+                      "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
                     }
                   }
-                }  
+                }
               ]
             },
             "networkProfile": {
