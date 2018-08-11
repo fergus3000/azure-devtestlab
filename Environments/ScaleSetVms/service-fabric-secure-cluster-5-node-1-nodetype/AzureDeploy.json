@@ -512,7 +512,7 @@
                   "apiVersion": "2017-03-30",
                   "location": "[parameters('location')]",
                   "dependsOn": [
-                    "[variables('vmName')]"
+                    "[variables('vmNodeType0Name')]"
                   ],
                   "properties": {
                     "publisher": "Microsoft.Compute",
