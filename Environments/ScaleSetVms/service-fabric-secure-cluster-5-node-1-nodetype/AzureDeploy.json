@@ -522,7 +522,7 @@
                     "settings": {
                       "fileUris": [
                       ],
-                      "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
+                      "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File hello.ps1"
                     }
                   }
                 }
