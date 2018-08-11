@@ -507,7 +507,6 @@
                   }
                 },
                 {
-                  "type": "CustomScriptExtension",
                   "name": "customScript",
                   "properties": {
                     "publisher": "Microsoft.Compute",
@@ -516,11 +515,12 @@
                         "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/hello.ps1"
                       ]
                     },
-                    "typeHandlerVersion": "1.8",
+                    "typeHandlerVersion": "1.9",
                     "autoUpgradeMinorVersion": true,
                     "protectedSettings": {
                       "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File hello.ps1"
-                    }
+                    },
+                    "type": "CustomScriptExtension"
                   }
                 }
               ]
