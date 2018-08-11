@@ -505,7 +505,22 @@
                     },
                     "typeHandlerVersion": "1.5"
                   }
-                }
+                },
+                {
+                  "name": "RunHello",
+                  "properties": {
+                    "publisher": "Microsoft.Azure.Extensions",
+                    "type": "CustomScript",
+                    "typeHandlerVersion": "2.0",
+                    "autoUpgradeMinorVersion": true,
+                    "settings": {
+                      "fileUris": [
+                        "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/hello.ps1"
+                      ],
+                      "commandToExecute": "hello.ps1"
+                    }
+                  }
+                }  
               ]
             },
             "networkProfile": {
