@@ -82,8 +82,8 @@
         },
         "clusterSize": {
             "type": "int",
-            "defaultValue": 3,
-            "minValue": 3,
+            "defaultValue": 5,
+            "minValue": 5,
             "metadata": {
                 "description": "Number of nodes in cluster"
             }
