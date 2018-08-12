@@ -163,6 +163,7 @@ $headers = @{ Authorization = $basicAuthValue }
 
     # wait for the other nodes then try to rebalance
     # todo get current node config and wait for them all
+    Start-Sleep -s 90
 
     #curl -v -X POST -u Administrator:password \
 #'http://192.168.0.77:8091/controller/rebalance'\
