@@ -1,5 +1,5 @@
 
-param([string]$ipAddress)
+param([string]$ipAddress, [string]$nodeName)
 
 
 function CreateLogsFolder {
@@ -140,6 +140,13 @@ function ConfigureCouchbase ($ipAddress){
 }
 
 CreateLogsFolder
+
+$hello = "Installing couchbase"
+
+$hello >> 'c:/pipeline/install-couhbase.txt'
+$ipAddress >> 'c:/pipeline/install-couhbase.txt'
+$nodeName >> 'c:/pipeline/install-couhbase.txt'
+
 InstallCouchbase
 
 # TODO: configure for all nodes
