@@ -19,6 +19,10 @@ function InstallCouchbase {
         $logFile
     )
     Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow 
+
+    New-NetFirewallRule -DisplayName "Couchbase" -Direction Inbound -Action Allow `
+         -EdgeTraversalPolicy Allow -Protocol TCP `
+         -LocalPort 8091-8093,11207,11209,11210,11211,11214,11215,18091,18092,4369,21100-21199
 }
 
 function isNodeOne($ipAddress)
@@ -29,6 +33,15 @@ function isNodeOne($ipAddress)
 
 function AddCouchbaseNode($ipAddress)
 {
+ #passing headers as param failed
+ $user = "Administrator"
+ $pass = "password"
+ $pair = "${user}:${pass}"
+ $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
+ $base64 = [System.Convert]::ToBase64String($bytes)
+ $basicAuthValue = "Basic $base64"
+ $headers = @{ Authorization = $basicAuthValue }
+
     Invoke-WebRequest -Method POST `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/node/controller/rename `
@@ -40,14 +53,27 @@ function AddCouchbaseNode($ipAddress)
   #      curl -u [admin]:[password]
   #[localhost]:8091/controller/addNode 
   #-d hostname=[IPaddress] user=[admin] password=[password] services=[kv|index|n1ql|fts]
+  $body= "user=Administrator&password=password&services=kv%2cn1ql%2Cindex&hostname="+$ipAddress
   Invoke-WebRequest -Method POST `
     -Headers $headers `
     -Uri http://10.0.0.4:8091/controller/addNode `
-    -Body ("services=kv%2cn1ql%2Cindex&hostname=" + $ipAddress) `
+    -Body $body `
     -ContentType application/x-www-form-urlencoded
+
+    Start-Sleep -s 60
+
 }
 
-function ConfigureCouchbase ($headers, $ipAddress){
+function ConfigureCouchbase ($ipAddress){
+
+    #passing headers as param failed
+    $user = "Administrator"
+$pass = "password"
+$pair = "${user}:${pass}"
+$bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
+$base64 = [System.Convert]::ToBase64String($bytes)
+$basicAuthValue = "Basic $base64"
+$headers = @{ Authorization = $basicAuthValue }
 
 
     # Initialize disk paths for Node
@@ -132,14 +158,27 @@ function ConfigureCouchbase ($headers, $ipAddress){
         -Uri http://127.0.0.1:8091/settings/rbac/users/local/events `
         -Body "name=events&roles=bucket_full_access[events]&password=events" `
         -ContentType application/x-www-form-urlencoded
+
+
+
+    # wait for the other nodes then try to rebalance
+    # todo get current node config and wait for them all
+
+    #curl -v -X POST -u Administrator:password \
+#'http://192.168.0.77:8091/controller/rebalance'\
+#-d 'knownNodes=ns_1@192.168.0.77,ns_1@192.168.0.56'
+    Invoke-WebRequest -Method POST `
+        -Headers $headers `
+        -Uri http://127.0.0.1:8091/controller/rebalance `
+        -Body "knownNodes=10.0.0.4,10.0.0.5,10.0.0.6,10.0.0.7,10.0.0.8" `
+        -ContentType application/x-www-form-urlencoded
 }
 
 CreateLogsFolder
 
 $hello = "Installing couchbase `n"
 
-$hello >> 'c:/logs/install-couhbase.txt `n'
-$ipAddress = (Get-NetIPAddress | ?{ $_.AddressFamily -eq "IPv4" -and ($_.IPAddress -match "10.0.0") }).IPAddress
+$hello >> 'c:/logs/install-couhbase.txt'
 
 $ipAddress >> 'c:/logs/install-couhbase.txt `n'
 
@@ -154,9 +193,10 @@ $base64 = [System.Convert]::ToBase64String($bytes)
 $basicAuthValue = "Basic $base64"
 $headers = @{ Authorization = $basicAuthValue }
 
-# TODO: configure for all nodes
-if(isNodeOne($headers, $ipAddress)){
-    ConfigureCouchbase  
+#TODO: failed to pass headers as param, fixit
+# configure for all nodes
+if(isNodeOne($ipAddress)){
+    ConfigureCouchbase($ipAddress)
 } else {
-    addCouchbaseNode($headers, $ipAddress)
+    addCouchbaseNode($ipAddress)
 }
