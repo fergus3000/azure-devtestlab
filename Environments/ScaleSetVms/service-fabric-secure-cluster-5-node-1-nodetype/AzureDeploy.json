@@ -512,23 +512,6 @@
                     "publisher": "Microsoft.Compute",
                     "settings": {
                       "fileUris": [
-                        "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/hello.ps1"
-                      ]
-                    },
-                    "typeHandlerVersion": "1.9",
-                    "autoUpgradeMinorVersion": true,
-                    "protectedSettings": {
-                      "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File hello.ps1"
-                    },
-                    "type": "CustomScriptExtension"
-                  }
-                },
-                {
-                  "name": "customScript",
-                  "properties": {
-                    "publisher": "Microsoft.Compute",
-                    "settings": {
-                      "fileUris": [
                         "https://packages.couchbase.com/releases/5.1.1/couchbase-server-community_5.1.1-windows_amd64.msi",
                         "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/install-couchbase.ps1"
                       ]
