@@ -1,7 +1,3 @@
-
-param([string]$ipAddress, [string]$nodeName)
-
-
 function CreateLogsFolder {
     #make sure we have a log folder
     $LogFolder = 'c:\logs'
@@ -27,28 +23,38 @@ function InstallCouchbase {
 
 function isNodeOne($ipAddress)
 {
-    if ($ipAddress -eq "10.0.0.4"){
-        return $TRUE
-    } else {
-        return $FALSE
-    }
+    return $ipAddress -eq "10.0.0.4"
 }
 
-function ConfigureCouchbase ($ipAddress){
 
-    $user = "Administrator"
-    $pass = "password"
-    $pair = "${user}:${pass}"
-    $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
-    $base64 = [System.Convert]::ToBase64String($bytes)
-    $basicAuthValue = "Basic $base64"
-    $headers = @{ Authorization = $basicAuthValue }
+function AddCouchbaseNode($ipAddress)
+{
+    Invoke-WebRequest -Method POST `
+        -Headers $headers `
+        -Uri http://127.0.0.1:8091/node/controller/rename `
+        -Body ("hostname=" + $ipAddress) `
+        -ContentType application/x-www-form-urlencoded
+
+    Start-Sleep -s 60
+
+  #      curl -u [admin]:[password]
+  #[localhost]:8091/controller/addNode 
+  #-d hostname=[IPaddress] user=[admin] password=[password] services=[kv|index|n1ql|fts]
+  Invoke-WebRequest -Method POST `
+    -Headers $headers `
+    -Uri http://10.0.0.4:8091/controller/addNode `
+    -Body ("services=kv%2cn1ql%2Cindex&hostname=" + $ipAddress) `
+    -ContentType application/x-www-form-urlencoded
+}
+
+function ConfigureCouchbase ($headers, $ipAddress){
+
 
     # Initialize disk paths for Node
     # curl -u Administrator:password -v -X POST http://[localhost]:8091/nodes/self/controller/settings
     #   -d path=[location]
     #   -d index_path=[location]
-    #Invoke-WebRequest -Method POST `
+    # Invoke-WebRequest -Method POST `
     #    -Headers $headers `
     #    -Uri http://127.0.0.1:8091/nodes/self/controller/settings `
     #    -Body "path=[location]&index_path=[location]" `
@@ -60,7 +66,7 @@ function ConfigureCouchbase ($ipAddress){
     Invoke-WebRequest -Method POST `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/node/controller/rename `
-        -Body "hostname=[localhost]" `
+        -Body "hostname=10.0.0.4" `
         -ContentType application/x-www-form-urlencoded
 
     #echo Configuring Couchbase cluster
@@ -126,30 +132,31 @@ function ConfigureCouchbase ($ipAddress){
         -Uri http://127.0.0.1:8091/settings/rbac/users/local/events `
         -Body "name=events&roles=bucket_full_access[events]&password=events" `
         -ContentType application/x-www-form-urlencoded
-
-
-    # TODO: how to decide if we are leader or wait for leader and add ourselves to that
-    # And do we need to configure everything if we add to clsuter
-    # Add node to cluster
-    #    curl -u Administrator:password \
-    #    10.2.2.60:8091/controller/addNode \
-    #    -d 'hostname=10.2.2.64&user=Administrator&password=password&services=n1ql'
-
-    # if is leader, setup the buckets etc
-    # else add to cluster
 }
 
 CreateLogsFolder
 
-$hello = "Installing couchbase"
+$hello = "Installing couchbase `n"
 
-$hello >> 'c:/logs/install-couhbase.txt'
-$ipAddress >> 'c:/logs/install-couhbase.txt'
-$nodeName >> 'c:/logs/install-couhbase.txt'
+$hello >> 'c:/logs/install-couhbase.txt `n'
+$ipAddress = (Get-NetIPAddress | ?{ $_.AddressFamily -eq “IPv4” -and ($_.IPAddress -match “10.0.0”) }).IPAddress
+
+$ipAddress >> 'c:/logs/install-couhbase.txt `n'
+
 
 InstallCouchbase
 
+$user = "Administrator"
+$pass = "password"
+$pair = "${user}:${pass}"
+$bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
+$base64 = [System.Convert]::ToBase64String($bytes)
+$basicAuthValue = "Basic $base64"
+$headers = @{ Authorization = $basicAuthValue }
+
 # TODO: configure for all nodes
-if(isNodeOne($ipAddress)){
+if(isNodeOne($headers, $ipAddress)){
     ConfigureCouchbase  
+} else {
+    addCouchbaseNode($headers, $ipAddress)
 }

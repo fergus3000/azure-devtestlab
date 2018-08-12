@@ -79,6 +79,14 @@
             "metadata": {
                 "description": "Public accessible application port #2."
             }
+        },
+        "clusterSize": {
+            "type": "int",
+            "defaultValue": 3,
+            "minValue": 3,
+            "metadata": {
+                "description": "Number of nodes in cluster"
+            }
         }
     },
     "variables": {
@@ -90,7 +98,7 @@
         "vaultSecret": "ClusterCertificate",
         "loadBalancedAppPort1": "[parameters('appPort1')]",
         "loadBalancedAppPort2": "[parameters('appPort2')]",
-        "nt0InstanceCount": 5
+        "nt0InstanceCount": "[parameters('clusterSize')]"
     },
     "resources": [
         {
