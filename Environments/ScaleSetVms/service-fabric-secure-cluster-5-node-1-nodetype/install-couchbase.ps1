@@ -28,9 +28,9 @@ function InstallCouchbase {
 function isNodeOne($ipAddress)
 {
     if ($ipAddress -eq "10.0.0.4"){
-        return true
+        return $TRUE
     } else {
-        return false
+        return $FALSE
     }
 }
 
@@ -143,9 +143,9 @@ CreateLogsFolder
 
 $hello = "Installing couchbase"
 
-$hello >> 'c:/pipeline/install-couhbase.txt'
-$ipAddress >> 'c:/pipeline/install-couhbase.txt'
-$nodeName >> 'c:/pipeline/install-couhbase.txt'
+$hello >> 'c:/logs/install-couhbase.txt'
+$ipAddress >> 'c:/logs/install-couhbase.txt'
+$nodeName >> 'c:/logs/install-couhbase.txt'
 
 InstallCouchbase
 
