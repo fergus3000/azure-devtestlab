@@ -181,6 +181,7 @@ $hello = "Installing couchbase `n"
 
 $hello >> 'c:/logs/install-couhbase.txt'
 
+$ipAddress = (Get-NetIPAddress | ?{ $_.AddressFamily -eq "IPv4" -and ($_.IPAddress -match "10.0.0") }).IPAddress
 $ipAddress >> 'c:/logs/install-couhbase.txt `n'
 
 
