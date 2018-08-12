@@ -512,7 +512,7 @@
                     "publisher": "Microsoft.Compute",
                     "settings": {
                       "fileUris": [
-                        "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/hello.ps1",
+                        "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/hello.ps1"
                       ]
                     },
                     "typeHandlerVersion": "1.9",
@@ -536,7 +536,7 @@
                     "typeHandlerVersion": "1.9",
                     "autoUpgradeMinorVersion": true,
                     "protectedSettings": {
-                      "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File install-couchbase.ps1', variables('lbIPConfig0'), variables('vmNodeType0Name')]"
+                      "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File install-couchbase.ps1 ', variables('lbIPConfig0'), variables('vmNodeType0Name'))]"
                     },
                     "type": "CustomScriptExtension"
                   }
