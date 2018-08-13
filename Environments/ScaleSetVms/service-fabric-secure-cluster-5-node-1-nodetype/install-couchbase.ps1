@@ -44,7 +44,7 @@ function AddCouchbaseNode($ipAddress) {
         -Headers $headers `
         -Uri http://127.0.0.1:8091/node/controller/rename `
         -Body ("hostname=" + $ipAddress) `
-        -ContentType application/x-www-form-urlencoded
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
     # add this node to cluster
     $body = "user=Administrator&password=password&services=kv%2cn1ql%2Cindex&hostname=" + $ipAddress
@@ -56,7 +56,7 @@ function AddCouchbaseNode($ipAddress) {
             -Headers $headers `
             -Uri http://10.0.0.4:8091/controller/addNode `
             -Body $body `
-            -ContentType application/x-www-form-urlencoded
+            -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
         $tries++
     } while (($tries -lt 30) -and ($response.StatusCode -ne 200) ) 
@@ -91,7 +91,7 @@ function ConfigureCouchbase ($ipAddress) {
         -Headers $headers `
         -Uri http://127.0.0.1:8091/node/controller/rename `
         -Body "hostname=10.0.0.4" `
-        -ContentType application/x-www-form-urlencoded
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
     #echo Configuring Couchbase cluster
     #curl -v -X POST http://127.0.0.1:8091/pools/default -d memoryQuota=1024 -d indexMemoryQuota=512
@@ -99,7 +99,7 @@ function ConfigureCouchbase ($ipAddress) {
         -Headers $headers `
         -Uri http://127.0.0.1:8091/pools/default `
         -Body "memoryQuota=1024&indexMemoryQuota=512" `
-        -ContentType application/x-www-form-urlencoded
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
     #echo Configuring Couchbase indexes
     #curl -v http://127.0.0.1:8091/node/controller/setupServices -d services=kv%2cn1ql%2Cindex
@@ -107,7 +107,7 @@ function ConfigureCouchbase ($ipAddress) {
         -Headers $headers `
         -Uri http://127.0.0.1:8091/node/controller/setupServices `
         -Body "services=kv%2cn1ql%2Cindex" `
-        -ContentType application/x-www-form-urlencoded
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
     #echo Creating Couchbase admin user
     #curl -v http://127.0.0.1:8091/settings/web -d port=8091 -d username=Administrator -d password=password
@@ -115,7 +115,7 @@ function ConfigureCouchbase ($ipAddress) {
         -Headers $headers `
         -Uri http://127.0.0.1:8091/settings/web `
         -Body "port=8091&username=Administrator&password=password" `
-        -ContentType application/x-www-form-urlencoded
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
     #echo Creating Couchbase buckets
     #curl -v -u Administrator:password -X POST http://127.0.0.1:8091/pools/default/buckets -d name=wfms -d replicaIndex=0 -d flushEnabled=1 -d bucketType=couchbase -d ramQuotaMB=256 -d authType=sasl -d saslPassword=password
@@ -123,19 +123,19 @@ function ConfigureCouchbase ($ipAddress) {
         -Headers $headers `
         -Uri http://127.0.0.1:8091/pools/default/buckets `
         -Body "name=wfms&replicaIndex=0&flushEnabled=1&bucketType=couchbase&ramQuotaMB=256&authType=sasl&saslPassword=password" `
-        -ContentType application/x-www-form-urlencoded `
-        #curl -v -u Administrator:password -X POST http://127.0.0.1:8091/pools/default/buckets -d name=timeseries -d replicaIndex=0 -d flushEnabled=1 -d bucketType=couchbase -d ramQuotaMB=512 -d authType=sasl -d saslPassword=password
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
+    #curl -v -u Administrator:password -X POST http://127.0.0.1:8091/pools/default/buckets -d name=timeseries -d replicaIndex=0 -d flushEnabled=1 -d bucketType=couchbase -d ramQuotaMB=512 -d authType=sasl -d saslPassword=password
     Invoke-WebRequest -Method POST `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/pools/default/buckets `
         -Body "name=timeseries&replicaIndex=0&flushEnabled=1&bucketType=couchbase&ramQuotaMB=512&authType=sasl&saslPassword=password" `
-        -ContentType application/x-www-form-urlencoded
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
     #curl -v -u Administrator:password -X POST http://127.0.0.1:8091/pools/default/buckets -d name=events -d replicaIndex=0 -d flushEnabled=1 -d bucketType=couchbase -d ramQuotaMB=256 -d authType=sasl -d saslPassword=password
     Invoke-WebRequest -Method POST `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/pools/default/buckets `
         -Body "name=events&replicaIndex=0&flushEnabled=1&bucketType=couchbase&ramQuotaMB=256&authType=sasl&saslPassword=password" `
-        -ContentType application/x-www-form-urlencoded
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
     #echo Creating Couchbase bucket users
     #curl -X PUT --data "name=wfms&roles=bucket_full_access[wfms]&password=wfmswfms" -H "Content-Type: application/x-www-form-urlencoded" http://Administrator:password@127.0.0.1:8091/settings/rbac/users/local/wfms
@@ -143,19 +143,19 @@ function ConfigureCouchbase ($ipAddress) {
         -Headers $headers `
         -Uri http://127.0.0.1:8091/settings/rbac/users/local/wfms `
         -Body "name=wfms&roles=bucket_full_access[wfms]&password=wfmswfms" `
-        -ContentType application/x-www-form-urlencoded
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
     #curl -X PUT --data "name=timeseries&roles=bucket_full_access[timeseries]&password=timeseries" -H "Content-Type: application/x-www-form-urlencoded" http://Administrator:password@127.0.0.1:8091/settings/rbac/users/local/timeseries
     Invoke-WebRequest -Method PUT `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/settings/rbac/users/local/timeseries `
         -Body "name=timeseries&roles=bucket_full_access[timeseries]&password=timeseries" `
-        -ContentType application/x-www-form-urlencoded
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
     #curl -X PUT --data "name=events&roles=bucket_full_access[events]&password=events" -H "Content-Type: application/x-www-form-urlencoded" http://Administrator:password@127.0.0.1:8091/settings/rbac/users/local/events         
     Invoke-WebRequest -Method PUT `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/settings/rbac/users/local/events `
         -Body "name=events&roles=bucket_full_access[events]&password=events" `
-        -ContentType application/x-www-form-urlencoded
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
 
     # wait for all nodes 
@@ -168,7 +168,7 @@ function ConfigureCouchbase ($ipAddress) {
         $response = Invoke-WebRequest -Method GET `
             -Headers $headers `
             -Uri http://127.0.0.1:8091/pools/nodes `
-            -ContentType application/x-www-form-urlencoded
+            -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
         $tries++
 
@@ -192,7 +192,7 @@ function ConfigureCouchbase ($ipAddress) {
         -Headers $headers `
         -Uri http://127.0.0.1:8091/controller/rebalance `
         -Body "knownNodes=ns_1@10.0.0.4,ns_1@10.0.0.5,ns_1@10.0.0.6,ns_1@10.0.0.7,ns_1@10.0.0.8" `
-        -ContentType application/x-www-form-urlencoded
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
     $response.StatusCode
 }
