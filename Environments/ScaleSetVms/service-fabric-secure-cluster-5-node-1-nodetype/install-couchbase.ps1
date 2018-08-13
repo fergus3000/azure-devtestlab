@@ -47,14 +47,16 @@ function AddCouchbaseNode($ipAddress) {
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
     # add this node to cluster
-    $body = "user=Administrator&password=password&services=kv%2cn1ql%2Cindex&hostname=" + $ipAddress
-    $tries = 0;
+    $tries = 0
     $status = 0
+    $body = "user=Administrator&password=password&services=kv%2cn1ql%2Cindex&hostname=" + $ipAddress
     DO {
         Write-Output 'Trying to add node in 30s'
 
         Start-Sleep -s 30
-        Write-Output 'Trying to add node now, attempt ' + $tries
+        $tries++
+
+        Write-Output "Trying to add node now, attempt $tries"
 
         Try {
             $response = Invoke-WebRequest -Method POST `
@@ -67,10 +69,12 @@ function AddCouchbaseNode($ipAddress) {
         }
         Catch {
             Write-Output 'Exception: Failed to add node' 
+            Write-Output "Exception: Failed to add node $response"
+            $status = 0
         }
 
-        $tries++
-    } while (($tries -lt 30) -and ($status -ne 200) ) 
+        
+    } While (($tries -lt 30) -and ($status -ne 200) ) 
 }
 
 function ConfigureCouchbase ($ipAddress) {
@@ -172,13 +176,15 @@ function ConfigureCouchbase ($ipAddress) {
     # wait for all nodes 
     $tries = 0
     $status = 0
+    $nodesCount = 0
     do {
 
-        Write-Output 'Trying to add get node info in 30s'
+        Write-Output 'Trying to get node info in 30s'
 
         Start-Sleep -s 30
+        $tries++
 
-        Write-Output 'Trying to get node info now, attempt ' + $tries
+        Write-Output "Trying to get node info now, attempt $tries"
 
         # get info about added nodes
         #curl -v -u Administrator:couchbase http://cb1.local:8091/pools/nodes
@@ -192,9 +198,9 @@ function ConfigureCouchbase ($ipAddress) {
         }
         catch {
             Write-Output 'Exception: Failed to get node info' 
+            Write-Output "Exception: Failed to get node info $response" 
         }
 
-        $tries++
 
         $nodesCount = 0
         
@@ -207,7 +213,7 @@ function ConfigureCouchbase ($ipAddress) {
             $nodes = $hash['nodes']
             $nodesCount = $nodes.Count        
         }
-        Write-Output 'Node count is ' + $nodesCount 
+        Write-Output "Node count is $nodesCount"
     } while (($tries -lt 30) -and ($nodesCount -ne 5)) 
 
     # start rebalance
