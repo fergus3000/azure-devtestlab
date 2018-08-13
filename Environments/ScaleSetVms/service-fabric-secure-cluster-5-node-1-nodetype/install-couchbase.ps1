@@ -48,7 +48,8 @@ function AddCouchbaseNode($ipAddress)
         -Body ("hostname=" + $ipAddress) `
         -ContentType application/x-www-form-urlencoded
 
-    Start-Sleep -s 60
+    # TODO: waiting 1m is not enough, must find a way to retry with timeout
+    Start-Sleep -s 120
 
   #      curl -u [admin]:[password]
   #[localhost]:8091/controller/addNode 
@@ -163,7 +164,7 @@ $headers = @{ Authorization = $basicAuthValue }
 
     # wait for the other nodes then try to rebalance
     # todo get current node config and wait for them all
-    Start-Sleep -s 90
+    Start-Sleep -s 300
 
     #curl -v -X POST -u Administrator:password \
 #'http://192.168.0.77:8091/controller/rebalance'\
@@ -182,7 +183,7 @@ $hello = "Installing couchbase `n"
 $hello >> 'c:/logs/install-couhbase.txt'
 
 $ipAddress = (Get-NetIPAddress | ?{ $_.AddressFamily -eq "IPv4" -and ($_.IPAddress -match "10.0.0") }).IPAddress
-$ipAddress >> 'c:/logs/install-couhbase.txt `n'
+$ipAddress >> 'c:/logs/install-couhbase.txt'
 
 
 InstallCouchbase
