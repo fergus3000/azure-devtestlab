@@ -40,7 +40,7 @@ function AddCouchbaseNode($ipAddress) {
     $basicAuthValue = "Basic $base64"
     $headers = @{ Authorization = $basicAuthValue }
 
-    $response = Invoke-WebRequest -Method POST `
+    Invoke-WebRequest -Method POST `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/node/controller/rename `
         -Body ("hostname=" + $ipAddress) `
@@ -50,15 +50,17 @@ function AddCouchbaseNode($ipAddress) {
     $tries = 0
     $status = 0
     $body = "user=Administrator&password=password&services=kv%2cn1ql%2Cindex&hostname=" + $ipAddress
-    DO {
+    do {
         Write-Output 'Trying to add node in 30s'
+        Start-Sleep -s 15
+        Write-Output 'Trying to add node in 15s'
+        Start-Sleep -s 15
 
-        Start-Sleep -s 30
         $tries++
 
         Write-Output "Trying to add node now, attempt $tries"
 
-        Try {
+        try {
             $response = Invoke-WebRequest -Method POST `
                 -Headers $headers `
                 -Uri http://10.0.0.4:8091/controller/addNode `
@@ -67,7 +69,8 @@ function AddCouchbaseNode($ipAddress) {
 
             $status = $response.StatusCode
         }
-        Catch {
+        catch {
+            $_.Exception.Response.StatusCode.Value__
             Write-Output 'Exception: Failed to add node' 
             Write-Output "Exception: Failed to add node $response"
             $status = 0
