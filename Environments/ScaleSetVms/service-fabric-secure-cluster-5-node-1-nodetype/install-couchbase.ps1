@@ -49,17 +49,28 @@ function AddCouchbaseNode($ipAddress) {
     # add this node to cluster
     $body = "user=Administrator&password=password&services=kv%2cn1ql%2Cindex&hostname=" + $ipAddress
     $tries = 0;
+    $status = 0
     DO {
-        Start-Sleep -s 30
+        Write-Output 'Trying to add node in 30s'
 
-        $response = Invoke-WebRequest -Method POST `
-            -Headers $headers `
-            -Uri http://10.0.0.4:8091/controller/addNode `
-            -Body $body `
-            -ContentType application/x-www-form-urlencoded -UseBasicParsing
+        Start-Sleep -s 30
+        Write-Output 'Trying to add node now, attempt ' + $tries
+
+        Try {
+            $response = Invoke-WebRequest -Method POST `
+                -Headers $headers `
+                -Uri http://10.0.0.4:8091/controller/addNode `
+                -Body $body `
+                -ContentType application/x-www-form-urlencoded -UseBasicParsing
+
+            $status = $response.StatusCode
+        }
+        Catch {
+            Write-Output 'Exception: Failed to add node' 
+        }
 
         $tries++
-    } while (($tries -lt 30) -and ($response.StatusCode -ne 200) ) 
+    } while (($tries -lt 30) -and ($status -ne 200) ) 
 }
 
 function ConfigureCouchbase ($ipAddress) {
@@ -159,21 +170,35 @@ function ConfigureCouchbase ($ipAddress) {
 
 
     # wait for all nodes 
-    $tries = 0;
-    DO {
+    $tries = 0
+    $status = 0
+    do {
+
+        Write-Output 'Trying to add get node info in 30s'
+
         Start-Sleep -s 30
+
+        Write-Output 'Trying to get node info now, attempt ' + $tries
 
         # get info about added nodes
         #curl -v -u Administrator:couchbase http://cb1.local:8091/pools/nodes
-        $response = Invoke-WebRequest -Method GET `
-            -Headers $headers `
-            -Uri http://127.0.0.1:8091/pools/nodes `
-            -ContentType application/x-www-form-urlencoded -UseBasicParsing
+        try {
+            
+            $response = Invoke-WebRequest -Method GET `
+                -Headers $headers `
+                -Uri http://127.0.0.1:8091/pools/nodes `
+                -ContentType application/x-www-form-urlencoded -UseBasicParsing
+            $status = $response.StatusCode
+        }
+        catch {
+            Write-Output 'Exception: Failed to get node info' 
+        }
 
         $tries++
 
         $nodesCount = 0
-        if ($response.StatusCode -eq 200) {
+        
+        if ($status -eq 200) {
             $json = $response | ConvertFrom-Json 
             $hash = @{}
             foreach ($property in $json.PSObject.Properties) {
@@ -182,6 +207,7 @@ function ConfigureCouchbase ($ipAddress) {
             $nodes = $hash['nodes']
             $nodesCount = $nodes.Count        
         }
+        Write-Output 'Node count is ' + $nodesCount 
     } while (($tries -lt 30) -and ($nodesCount -ne 5)) 
 
     # start rebalance
