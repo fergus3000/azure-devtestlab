@@ -519,7 +519,7 @@
                     "typeHandlerVersion": "1.9",
                     "autoUpgradeMinorVersion": true,
                     "protectedSettings": {
-                      "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File install-couchbase.ps1 > c:/logs/pslog.txt"
+                      "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File install-couchbase.ps1"
                     },
                     "type": "CustomScriptExtension"
                   }
