@@ -1,3 +1,10 @@
+
+function Log ($text) {
+    $ts = Get-Date -Format "o"
+    Write-Output "$ts    $text"
+    "$ts    $text" >> 'c:/logs/install-couhbase.txt'
+}
+
 function CreateLogsFolder {
     #make sure we have a log folder
     $LogFolder = 'c:\logs'
@@ -51,14 +58,14 @@ function AddCouchbaseNode($ipAddress) {
     $status = 0
     $body = "user=Administrator&password=password&services=kv%2cn1ql%2Cindex&hostname=" + $ipAddress
     do {
-        Write-Output 'Trying to add node in 30s'
+        Log('Trying to add node in 30s')
         Start-Sleep -s 15
-        Write-Output 'Trying to add node in 15s'
+        Log('Trying to add node in 15s')
         Start-Sleep -s 15
 
         $tries++
 
-        Write-Output "Trying to add node now, attempt $tries"
+        Log("Trying to add node now, attempt $tries")
 
         try {
             $response = Invoke-WebRequest -Method POST `
@@ -67,12 +74,12 @@ function AddCouchbaseNode($ipAddress) {
                 -Body $body `
                 -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
-            Write-Output $response
+            Log($response)
             $status = $response.StatusCode
         }
         catch {
-            Write-Output 'Exception: Failed to add node' 
-            Write-Output "Exception: Failed to add node $response"
+            Log('Exception: Failed to add node')
+            Log("Exception: Failed to add node $response")
             $status = 0
         }
 
@@ -182,13 +189,10 @@ function ConfigureCouchbase ($ipAddress) {
     $nodesCount = 0
     do {
 
-        Write-Output 'Trying to get node info in 30s'
-
+        Log('Trying to get node info in 30s') 
         Start-Sleep -s 30
         $tries++
-
-        Write-Output "Trying to get node info now, attempt $tries"
-
+        Log("Trying to get node info now, attempt $tries")
         # get info about added nodes
         #curl -v -u Administrator:couchbase http://cb1.local:8091/pools/nodes
         try {
@@ -200,8 +204,8 @@ function ConfigureCouchbase ($ipAddress) {
             $status = $response.StatusCode
         }
         catch {
-            Write-Output 'Exception: Failed to get node info' 
-            Write-Output "Exception: Failed to get node info $response" 
+            Log('Exception: Failed to get node info' )
+            Log("Exception: Failed to get node info $response")
         }
 
 
@@ -214,11 +218,12 @@ function ConfigureCouchbase ($ipAddress) {
                 $hash[$property.Name] = $property.Value
             }
             $nodes = $hash['nodes']
-            $nodesCount = $nodes.Count        
+            $nodesCount = $nodes.Count
+            Log("Node count is $nodesCount" )
         }
-        Write-Output "Node count is $nodesCount"
-    } while (($tries -lt 30) -and ($nodesCount -ne 5)) 
-
+        Log("Node count is $nodesCount" )
+    } while (($tries -lt 60) -and ($nodesCount -ne 5))
+    Log("Starting rebalance" )
     # start rebalance
     #curl -v -X POST -u Administrator:password \
     #'http://192.168.0.77:8091/controller/rebalance'\
@@ -229,12 +234,14 @@ function ConfigureCouchbase ($ipAddress) {
         -Body "knownNodes=ns_1@10.0.0.4,ns_1@10.0.0.5,ns_1@10.0.0.6,ns_1@10.0.0.7,ns_1@10.0.0.8" `
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
-    $response.StatusCode
+    Log("Starting rebalance result $response" )
 }
 
 CreateLogsFolder 
 
 Start-Transcript -Path 'c:\logs\install-couchbase-ps1-transcript.txt'
+
+Get-Date -Format "o"
 
 $hello = "Installing couchbase `n"
 
