@@ -27,7 +27,7 @@ function InstallCouchbase {
     )
     Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow 
 
-    New-NetFirewallRule -DisplayName "Couchbase" -Direction Inbound -Action Allow `
+    New-NetFirewallRule -DisplayName "Couchbase" -Direction Inbound -Action Allow -Protocol TCP `
         -EdgeTraversalPolicy Allow `
         -LocalPort 4369, 8091-8096, 9100-9105, 9110-9118, 9119, 9120-9122, 9998, 9999, 11209, 11210, 11213, 21100-21299
 }
