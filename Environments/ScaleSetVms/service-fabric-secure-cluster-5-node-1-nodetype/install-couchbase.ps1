@@ -67,10 +67,10 @@ function AddCouchbaseNode($ipAddress) {
                 -Body $body `
                 -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
+            Write-Output $response
             $status = $response.StatusCode
         }
         catch {
-            $_.Exception.Response.StatusCode.Value__
             Write-Output 'Exception: Failed to add node' 
             Write-Output "Exception: Failed to add node $response"
             $status = 0
