@@ -100,7 +100,51 @@ function AddCouchbaseNode($ipAddress) {
         }
 
         
-    } While (($tries -lt 30) -and ($status -ne 200) ) 
+    } While (($tries -lt 30) -and ($status -ne 200) )
+    
+    Log('Checking if i am last') 
+    # get info about added nodes
+    #curl -v -u Administrator:couchbase http://cb1.local:8091/pools/nodes
+    try {
+        Log("Trying to get node info now, attempt $tries")
+        $response = Invoke-WebRequest -Method GET `
+            -Headers $headers `
+            -Uri http://10.0.0.4:8091/pools/nodes `
+            -ContentType application/x-www-form-urlencoded -UseBasicParsing
+        $status = $response.StatusCode
+        Log("Response was $response.StatusCode" )
+    }
+    catch {
+        Log('Exception: Failed to get node info' )
+        Log("Exception: Failed to get node info $response")
+    }
+    $nodesCount = 0
+    if ($status -eq 200) {
+        $json = $response | ConvertFrom-Json 
+        $hash = @{}
+        foreach ($property in $json.PSObject.Properties) {
+            $hash[$property.Name] = $property.Value
+        }
+        $nodes = $hash['nodes']
+        $nodesCount = $nodes.Count
+        Log("Node count is $nodesCount" )
+    }
+    Log("Node count is $nodesCount" )
+
+    if ($nodesCount -eq 5) {
+        Log("Starting rebalance" )
+        # start rebalance
+        #curl -v -X POST -u Administrator:password \
+        #'http://192.168.0.77:8091/controller/rebalance'\
+        #-d 'knownNodes=ns_1@192.168.0.77,ns_1@192.168.0.56'
+        $response = Invoke-WebRequest -Method POST `
+            -Headers $headers `
+            -Uri http://10.0.0.4:8091/controller/rebalance `
+            -Body "knownNodes=ns_1@10.0.0.4,ns_1@10.0.0.5,ns_1@10.0.0.6,ns_1@10.0.0.7,ns_1@10.0.0.8" `
+            -ContentType application/x-www-form-urlencoded -UseBasicParsing
+
+        Log("Starting rebalance result $response" )
+    }
 }
 
 function ConfigureCouchbase ($ipAddress) {
@@ -197,60 +241,6 @@ function ConfigureCouchbase ($ipAddress) {
         -Uri http://127.0.0.1:8091/settings/rbac/users/local/events `
         -Body "name=events&roles=bucket_full_access[events]&password=events" `
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
-
-
-    # wait for all nodes 
-    $tries = 0
-    $status = 0
-    $nodesCount = 0
-    do {
-
-        Log('Trying to get node info in 30s') 
-        Start-Sleep -s 30
-        $tries++
-        # get info about added nodes
-        #curl -v -u Administrator:couchbase http://cb1.local:8091/pools/nodes
-        try {
-            Log("Trying to get node info now, attempt $tries")
-            $response = Invoke-WebRequest -Method GET `
-                -Headers $headers `
-                -Uri http://127.0.0.1:8091/pools/nodes `
-                -ContentType application/x-www-form-urlencoded -UseBasicParsing
-            $status = $response.StatusCode
-            Log("Response was $response.StatusCode" )
-        }
-        catch {
-            Log('Exception: Failed to get node info' )
-            Log("Exception: Failed to get node info $response")
-        }
-
-
-        $nodesCount = 0
-        
-        if ($status -eq 200) {
-            $json = $response | ConvertFrom-Json 
-            $hash = @{}
-            foreach ($property in $json.PSObject.Properties) {
-                $hash[$property.Name] = $property.Value
-            }
-            $nodes = $hash['nodes']
-            $nodesCount = $nodes.Count
-            Log("Node count is $nodesCount" )
-        }
-        Log("Node count is $nodesCount" )
-    } while (($tries -lt 60) -and ($nodesCount -ne 5))
-    Log("Starting rebalance" )
-    # start rebalance
-    #curl -v -X POST -u Administrator:password \
-    #'http://192.168.0.77:8091/controller/rebalance'\
-    #-d 'knownNodes=ns_1@192.168.0.77,ns_1@192.168.0.56'
-    $response = Invoke-WebRequest -Method POST `
-        -Headers $headers `
-        -Uri http://127.0.0.1:8091/controller/rebalance `
-        -Body "knownNodes=ns_1@10.0.0.4,ns_1@10.0.0.5,ns_1@10.0.0.6,ns_1@10.0.0.7,ns_1@10.0.0.8" `
-        -ContentType application/x-www-form-urlencoded -UseBasicParsing
-
-    Log("Starting rebalance result $response" )
 }
 
 CreateLogsFolder 
