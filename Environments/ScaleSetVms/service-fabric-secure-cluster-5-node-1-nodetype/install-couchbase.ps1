@@ -192,16 +192,16 @@ function ConfigureCouchbase ($ipAddress) {
         Log('Trying to get node info in 30s') 
         Start-Sleep -s 30
         $tries++
-        Log("Trying to get node info now, attempt $tries")
         # get info about added nodes
         #curl -v -u Administrator:couchbase http://cb1.local:8091/pools/nodes
         try {
-            
+            Log("Trying to get node info now, attempt $tries")
             $response = Invoke-WebRequest -Method GET `
                 -Headers $headers `
                 -Uri http://127.0.0.1:8091/pools/nodes `
                 -ContentType application/x-www-form-urlencoded -UseBasicParsing
             $status = $response.StatusCode
+            Log("Response was $response.StatusCode" )
         }
         catch {
             Log('Exception: Failed to get node info' )
