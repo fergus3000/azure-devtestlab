@@ -411,9 +411,6 @@
       "dependsOn": [
         "[variables('vmNodeType0Name')]"
       ],
-      "tags": {
-        "displayName": "config-app"
-      },
       "properties": {
         "publisher": "Microsoft.Compute",
         "settings": {
