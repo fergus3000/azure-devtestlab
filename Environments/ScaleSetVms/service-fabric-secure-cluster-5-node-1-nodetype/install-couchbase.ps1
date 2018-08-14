@@ -28,8 +28,8 @@ function InstallCouchbase {
     Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow 
 
     New-NetFirewallRule -DisplayName "Couchbase" -Direction Inbound -Action Allow `
-        -EdgeTraversalPolicy Allow -Protocol TCP `
-        -LocalPort 8091-8093, 11207, 11209, 11210, 11211, 11214, 11215, 18091, 18092, 4369, 21100-21199
+        -EdgeTraversalPolicy Allow `
+        -LocalPort 4369, 8091-8096, 9100-9105, 9110-9118, 9119, 9120-9122, 9998, 9999, 11209, 11210, 11213, 21100-21299
 }
 
 function isNodeOne($ipAddress) {
