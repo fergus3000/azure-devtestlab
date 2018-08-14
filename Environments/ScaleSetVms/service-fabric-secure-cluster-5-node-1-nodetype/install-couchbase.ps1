@@ -53,6 +53,22 @@ function AddCouchbaseNode($ipAddress) {
         -Body ("hostname=" + $ipAddress) `
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
+    #echo Configuring Couchbase cluster
+    #curl -v -X POST http://127.0.0.1:8091/pools/default -d memoryQuota=1024 -d indexMemoryQuota=512
+    Invoke-WebRequest -Method POST `
+        -Headers $headers `
+        -Uri http://127.0.0.1:8091/pools/default `
+        -Body "memoryQuota=1024&indexMemoryQuota=512" `
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
+
+    #echo Configuring Couchbase indexes
+    #curl -v http://127.0.0.1:8091/node/controller/setupServices -d services=kv%2cn1ql%2Cindex
+    Invoke-WebRequest -Method POST `
+        -Headers $headers `
+        -Uri http://127.0.0.1:8091/node/controller/setupServices `
+        -Body "services=kv%2cn1ql%2Cindex" `
+        -ContentType application/x-www-form-urlencoded -UseBasicParsing
+
     # add this node to cluster
     $tries = 0
     $status = 0
