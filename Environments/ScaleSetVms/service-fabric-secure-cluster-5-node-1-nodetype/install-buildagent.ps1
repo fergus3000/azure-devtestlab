@@ -17,6 +17,10 @@ function isNodeOne($ipAddress) {
     return $ipAddress -eq "10.0.0.4"
 }
 
+Start-Transcript -Path 'c:\logs\install-buildagent-ps1-transcript.txt'
+
+$ipAddress = (Get-NetIPAddress | ? { $_.AddressFamily -eq "IPv4" -and ($_.IPAddress -match "10.0.0") }).IPAddress
+
 if (isNodeOne($ipAddress)) {
     $CurDir = get-location
     mkdir c:\agent
@@ -28,3 +32,5 @@ if (isNodeOne($ipAddress)) {
 
     .\config.cmd --unattended --url $ServerUrl --auth PAT --token $PersonalAccessToken --pool $PoolName --agent $AgentName --runasservice
 }
+
+Stop-Transcript
