@@ -87,6 +87,30 @@
             "metadata": {
                 "description": "Number of nodes in cluster"
             }
+        },
+        "vstsServerUrl": {
+          "type": "string",
+          "metadata": {
+            "description": "The vsts url for the organization"
+          }
+        },
+        "vstsPersonalAccessToken": {
+          "type": "string",
+          "metadata": {
+            "description": "The PAT for vsts"
+          }
+        },
+        "vstsAgentPoolName": {
+          "type": "string",
+          "metadata": {
+            "description": "The agent pool the agent will be registered in"
+          }
+        },
+        "vstsAgentName": {
+          "type": "string",
+          "metadata": {
+            "description": "The name of the agent"
+          }
         }
     },
     "variables": {
@@ -186,7 +210,20 @@
                     },
                     "nodeDataDrive": {
                         "value": "OS"
+                    },
+                    "vstsServerUrl": {
+                        "value": "[parameters('vstsServerUrl')]"
+                    }                    ,
+                    "vstsPersonalAccessToken": {
+                        "value": "[parameters('vstsPersonalAccessToken')]"
+                    }                    ,
+                    "vstsAgentPoolName": {
+                        "value": "[parameters('vstsAgentPoolName')]"
+                    }                    ,
+                    "vstsAgentName": {
+                        "value": "[parameters('vstsAgentName')]"
                     }
+                    
                 }
             }
         },
