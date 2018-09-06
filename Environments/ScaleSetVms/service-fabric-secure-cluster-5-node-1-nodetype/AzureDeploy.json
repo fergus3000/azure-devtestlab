@@ -660,7 +660,8 @@
           },
           "httpGatewayEndpointPort": "[variables('nt0fabricHttpGatewayPort')]",
           "isPrimary": true,
-          "vmInstanceCount": "[parameters('nt0InstanceCount')]"
+          "vmInstanceCount": "[parameters('nt0InstanceCount')]",
+          "reverseProxyEndpointPort": 19081
         }],
         "provisioningState": "Default",
         "reliabilityLevel": "Silver",
