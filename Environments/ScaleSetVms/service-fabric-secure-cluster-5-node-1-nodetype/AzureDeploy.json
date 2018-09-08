@@ -441,6 +441,7 @@
           "fileUris": [
             "https://vstsagentpackage.azureedge.net/agent/2.139.1/vsts-agent-win-x64-2.139.1.zip",
             "https://packages.couchbase.com/releases/5.1.1/couchbase-server-community_5.1.1-windows_amd64.msi",
+            "https://dot.net/v1/dotnet-install.ps1",
             "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/install-couchbase.ps1",
             "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/install-buildagent.ps1",
             "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/run-scripts.ps1"
@@ -660,8 +661,7 @@
           },
           "httpGatewayEndpointPort": "[variables('nt0fabricHttpGatewayPort')]",
           "isPrimary": true,
-          "vmInstanceCount": "[parameters('nt0InstanceCount')]",
-          "reverseProxyEndpointPort": 19081
+          "vmInstanceCount": "[parameters('nt0InstanceCount')]"
         }],
         "provisioningState": "Default",
         "reliabilityLevel": "Silver",
