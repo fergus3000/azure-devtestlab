@@ -441,7 +441,7 @@
           "fileUris": [
             "https://vstsagentpackage.azureedge.net/agent/2.139.1/vsts-agent-win-x64-2.139.1.zip",
             "https://packages.couchbase.com/releases/5.1.1/couchbase-server-community_5.1.1-windows_amd64.msi",
-            "https://www.microsoft.com/net/download/thank-you/dotnet-sdk-2.1.401-windows-x64-installer",
+            "https://download.microsoft.com/download/E/8/A/E8AF2EE0-5DDA-4420-A395-D1A50EEFD83E/dotnet-sdk-2.1.401-win-x64.exe",
             "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/install-couchbase.ps1",
             "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/install-buildagent.ps1",
             "https://raw.githubusercontent.com/tommyja/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/run-scripts.ps1"

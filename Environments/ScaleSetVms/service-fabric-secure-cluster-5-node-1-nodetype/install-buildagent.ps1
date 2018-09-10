@@ -23,8 +23,7 @@ $ipAddress = (Get-NetIPAddress | ? { $_.AddressFamily -eq "IPv4" -and ($_.IPAddr
 
 if (isNodeOne($ipAddress)) {
 
-    ./dotnet-sdk-2.1.401-win-x64.exe /install /norestart /quiet /log "c:\logs\Microsoft .NET Core SDK 2.1.105.log"
-
+    ./dotnet-sdk-2.1.401-win-x64.exe /install /norestart /quiet /log "c:\logs\Dotnet Core SDK 2.1.105.log"
     #& ($PSScriptRoot + "\dotnet-install.ps1") -InstallDir c:/dotnet
     #$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
     #$newpath = "$oldpath;c:\dotnet"
