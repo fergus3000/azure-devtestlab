@@ -30,6 +30,7 @@ Get-Date
 
 & ($PSScriptRoot + "\install-couchbase.ps1")
 
+$ipAddress = (Get-NetIPAddress | ? { $_.AddressFamily -eq "IPv4" -and ($_.IPAddress -match "10.0.0") }).IPAddress
 if (isNodeOne($ipAddress)) {
 
     Write-Host "Installing .net core sdk "
