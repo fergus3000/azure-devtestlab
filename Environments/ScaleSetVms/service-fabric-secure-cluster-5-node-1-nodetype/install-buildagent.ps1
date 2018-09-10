@@ -23,13 +23,23 @@ $ipAddress = (Get-NetIPAddress | ? { $_.AddressFamily -eq "IPv4" -and ($_.IPAddr
 
 if (isNodeOne($ipAddress)) {
 
-#    ./dotnet-sdk-2.1.401-win-x64.exe /install /norestart /quiet /log "c:\logs\Dotnet Core SDK 2.1.105.log" 
-    Start-Process -FilePath "./dotnet-sdk-2.1.401-win-x64.exe" -ArgumentList "/install /norestart /quiet /log 'c:\logs\Dotnet Core SDK 2.1.105.log'" -PassThru -Wait
+    Write-Host "Installing .net core sdk "
+    Get-Date
+
+    ./dotnet-sdk-2.1.401-win-x64.exe /install /norestart /quiet /log "c:\logs\Dotnet Core SDK 2.1.105.log"
+    #Start-Process -FilePath "./dotnet-sdk-2.1.401-win-x64.exe" -ArgumentList "/install /norestart /quiet /log 'c:\logs\Dotnet Core SDK 2.1.105.log'" -PassThru -Wait
+
+    Write-Host "Done installing .net core sdk "
+    Get-Date
+
 
     #& ($PSScriptRoot + "\dotnet-install.ps1") -InstallDir c:/dotnet
     #$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
     #$newpath = "$oldpath;c:\dotnet"
     #setx /M PATH $newpath
+
+    Write-Host "Installing build agent"
+    Get-Date
 
     $CurDir = get-location
     mkdir c:\agent
@@ -40,6 +50,9 @@ if (isNodeOne($ipAddress)) {
     .\config.cmd --unattended --url $ServerUrl --auth PAT --token $PersonalAccessToken --pool $PoolName --agent $AgentName --runasservice
 
     Set-Location $CurDir
+
+    Write-Host "Done installing build agent"
+    Get-Date
 }
 
 Stop-Transcript
