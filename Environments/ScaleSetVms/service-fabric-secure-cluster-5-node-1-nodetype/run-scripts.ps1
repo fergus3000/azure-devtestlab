@@ -20,6 +20,8 @@ function isNodeOne($ipAddress) {
 
 Start-Transcript -Path 'c:\logs\run-scripts-ps1-transcript.txt'
 
+& ($PSScriptRoot + "\install-couchbase.ps1")
+
 $ipAddress = (Get-NetIPAddress | ? { $_.AddressFamily -eq "IPv4" -and ($_.IPAddress -match "10.0.0") }).IPAddress
 if (isNodeOne($ipAddress)) {
 
@@ -41,7 +43,6 @@ Get-Date
 Write-Host "running install-couchbase.ps1"
 Get-Date
 
-& ($PSScriptRoot + "\install-couchbase.ps1")
 
 Write-Host "done"
 
