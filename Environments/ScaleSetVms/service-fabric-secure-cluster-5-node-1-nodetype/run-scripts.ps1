@@ -22,19 +22,6 @@ Start-Transcript -Path 'c:\logs\run-scripts-ps1-transcript.txt'
 
 & ($PSScriptRoot + "\install-couchbase.ps1")
 
-$ipAddress = (Get-NetIPAddress | ? { $_.AddressFamily -eq "IPv4" -and ($_.IPAddress -match "10.0.0") }).IPAddress
-if (isNodeOne($ipAddress)) {
-
-    Write-Host "Installing .net core sdk "
-    Get-Date
-
-    ./dotnet-sdk-2.1.401-win-x64.exe /install /quiet /log "c:\logs\Dotnet Core SDK 2.1.105.log"
-    #Start-Process -FilePath "./dotnet-sdk-2.1.401-win-x64.exe" -ArgumentList "/install /norestart /quiet /log 'c:\logs\Dotnet Core SDK 2.1.105.log'" -PassThru -Wait
-
-    Write-Host "Done installing .net core sdk "
-    Get-Date
-}
-
 Write-Host "running install-buildagent.ps1 "
 Get-Date
 

@@ -30,14 +30,25 @@ if (isNodeOne($ipAddress)) {
     mkdir c:\agent
     Set-Location c:\agent
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    [System.IO.Compression.ZipFile]::ExtractToDirectory("$CurDir\vsts-agent-win-x64-2.139.1.zip", "$PWD")
+    [System.IO.Compression.ZipFile]::ExtractToDirectory("$CurDir\vsts-agent-win-x64-2.140.0.zip", "$PWD")
 
     .\config.cmd --unattended --url $ServerUrl --auth PAT --token $PersonalAccessToken --pool $PoolName --agent $AgentName --runasservice
 
     Set-Location $CurDir
 
-    Write-Host "Done installing build agent"
+    Write-Host "Installing .net core sdk "
     Get-Date
+
+    ./dotnet-sdk-2.1.401-win-x64.exe /install /quiet /log "c:\logs\Dotnet Core SDK 2.1.105.log"
+    #Start-Process -FilePath "./dotnet-sdk-2.1.401-win-x64.exe" -ArgumentList "/install /norestart /quiet /log 'c:\logs\Dotnet Core SDK 2.1.105.log'" -PassThru -Wait
+
+    Write-Host "Done installing .net core sdk "
+    Get-Date
+
+    Write-Host "Restarting build agent"
+    Restart-Service -Name vstsagent.kognifai.GaloreSF1
+    Write-Host "Build agent done"
+
 }
 
 Stop-Transcript
