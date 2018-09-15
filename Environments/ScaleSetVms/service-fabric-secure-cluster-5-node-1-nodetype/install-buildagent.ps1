@@ -39,13 +39,14 @@ if (isNodeOne($ipAddress)) {
     Write-Host "Installing .net core sdk "
     Get-Date
 
-    ./dotnet-sdk-2.1.401-win-x64.exe /install /quiet /log "c:\logs\Dotnet Core SDK 2.1.105.log"
+    ./dotnet-sdk-2.1.401-win-x64.exe /install /quiet /norestart /log "c:\logs\Dotnet Core SDK 2.1.401.log"
     #Start-Process -FilePath "./dotnet-sdk-2.1.401-win-x64.exe" -ArgumentList "/install /norestart /quiet /log 'c:\logs\Dotnet Core SDK 2.1.105.log'" -PassThru -Wait
 
     Write-Host "Done installing .net core sdk "
     Get-Date
 
     Write-Host "Restarting build agent"
+    Start-Sleep 10000
     Restart-Service -Name vstsagent.kognifai.GaloreSF1
     Write-Host "Build agent done"
 
