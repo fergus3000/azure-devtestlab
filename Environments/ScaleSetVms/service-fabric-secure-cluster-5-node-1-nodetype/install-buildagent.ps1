@@ -45,11 +45,12 @@ if (isNodeOne($ipAddress)) {
     Write-Host "Done installing .net core sdk "
     Get-Date
 
-    Write-Host "Restarting build agent"
-    Start-Sleep -Seconds 10
-    Restart-Service -Name vstsagent.kognifai.GaloreSF1
-    Write-Host "Build agent done"
+    Write-Host "Restarting build agent in one minute"
 
+    Start-Process powershell -ArgumentList "-Command Start-Sleep -Seconds 60; Restart-Service -Name vstsagent.kognifai.GaloreSF1; Write-Host 'done restart agent'"
+
+    Write-Host "Build agent done"
+    Get-Date
 }
 
 Stop-Transcript
