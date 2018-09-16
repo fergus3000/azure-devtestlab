@@ -46,7 +46,7 @@ if (isNodeOne($ipAddress)) {
     Get-Date
 
     Write-Host "Restarting build agent"
-    Start-Sleep 10000
+    Start-Sleep -Seconds 10
     Restart-Service -Name vstsagent.kognifai.GaloreSF1
     Write-Host "Build agent done"
 
