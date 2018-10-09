@@ -345,7 +345,7 @@
               "backendAddressPool": {
                 "id": "[variables('lbPoolID0')]"
               },
-              "backendPort": "[parameters('loadBalancedAppPort2')]",
+              "backendPort": "5050",
               "enableFloatingIP": false,
               "frontendIPConfiguration": {
                 "id": "[variables('lbIPConfig0')]"
@@ -391,7 +391,7 @@
             "properties": {
               "intervalInSeconds": 5,
               "numberOfProbes": 2,
-              "port": "[parameters('loadBalancedAppPort2')]",
+              "port": "5050",
               "protocol": "Tcp"
             }
           }
