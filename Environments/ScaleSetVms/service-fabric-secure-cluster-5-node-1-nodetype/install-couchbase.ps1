@@ -183,7 +183,7 @@ function ConfigureCouchbase ($ipAddress) {
     Invoke-WebRequest -Method POST `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/pools/default `
-        -Body "memoryQuota=1024&indexMemoryQuota=512" `
+        -Body "memoryQuota=5502&indexMemoryQuota=512" `
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
     #echo Configuring Couchbase indexes
@@ -207,7 +207,7 @@ function ConfigureCouchbase ($ipAddress) {
     Invoke-WebRequest -Method POST `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/pools/default/buckets `
-        -Body "name=wfms&replicaIndex=0&flushEnabled=1&bucketType=couchbase&ramQuotaMB=256&authType=sasl&saslPassword=password" `
+        -Body "name=wfms&replicaIndex=0&flushEnabled=1&bucketType=couchbase&ramQuotaMB=4096&authType=sasl&saslPassword=password" `
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
     #curl -v -u Administrator:password -X POST http://127.0.0.1:8091/pools/default/buckets -d name=timeseries -d replicaIndex=0 -d flushEnabled=1 -d bucketType=couchbase -d ramQuotaMB=512 -d authType=sasl -d saslPassword=password
     Invoke-WebRequest -Method POST `
