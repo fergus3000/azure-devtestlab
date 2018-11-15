@@ -161,7 +161,7 @@
   "variables": {
     "dnsName": "[parameters('clusterName')]",
     "vmName": "vm",
-    "virtualNetworkName": "[concat('VNet-',variables('clusterName'))]",
+    "virtualNetworkName": "[concat('VNet-',parameters('clusterName'))]",
     "addressPrefix": "10.0.0.0/16",
     "nicName": "NIC",
     "lbIPName": "PublicIP-LB-FE",
@@ -172,7 +172,7 @@
     "nt0ephemeralEndPort": "65534",
     "nt0fabricTcpGatewayPort": "19000",
     "nt0fabricHttpGatewayPort": "19080",
-    "subnet0Name": "[concat('subnet-',variables('clusterName'))]",
+    "subnet0Name": "[concat('subnet-',parameters('clusterName'))]",
     "subnet0Prefix": "10.0.0.0/24",
     "subnet0Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets/', variables('virtualNetworkName'), variables('subnet0Name'))]",
     "supportLogStorageAccountName": "[concat( uniqueString(resourceGroup().id),'2')]",
