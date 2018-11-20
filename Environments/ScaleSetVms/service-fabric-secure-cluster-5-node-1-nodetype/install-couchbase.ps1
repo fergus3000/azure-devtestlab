@@ -276,4 +276,7 @@ else {
     addCouchbaseNode($ipAddress)
 }
 
+# prevent antimalware from scanning some folders
+Set-MpPreference -ExclusionPath "C:\logs", "C:\Program Files\Couchbase\Server\var\lib\couchbase"
+
 Stop-Transcript
