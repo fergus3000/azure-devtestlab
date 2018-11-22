@@ -615,7 +615,7 @@
       },
       "sku": {
         "name": "[variables('vmNodeType0Size')]",
-        "capacity": "[parameters('nt0InstanceCount')]",
+        "capacity": 10,
         "tier": "Standard"
       },
       "tags": {
@@ -668,7 +668,7 @@
           },
           "httpGatewayEndpointPort": "[variables('nt0fabricHttpGatewayPort')]",
           "isPrimary": true,
-          "vmInstanceCount": "[parameters('nt0InstanceCount')]"
+          "vmInstanceCount": 10
         }],
         "provisioningState": "Default",
         "reliabilityLevel": "Silver",
