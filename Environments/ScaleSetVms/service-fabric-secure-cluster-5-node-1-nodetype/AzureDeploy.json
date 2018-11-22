@@ -671,7 +671,7 @@
           "vmInstanceCount": 10
         }],
         "provisioningState": "Default",
-        "reliabilityLevel": "Silver",
+        "reliabilityLevel": "Platinum",
         "upgradeMode": "Automatic",
         "vmImage": "Windows"
       },
