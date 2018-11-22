@@ -23,7 +23,7 @@ function isNodeOne($ipAddress) {
 
 Start-Transcript -Path 'c:\logs\run-scripts-ps1-transcript.txt'
 
-& ($PSScriptRoot + "\install-couchbase.ps1 -numClusterNodes " + $numClusterNodes)
+& ($PSScriptRoot + "\install-couchbase.ps1") -numClusterNodes $numClusterNodes
 
 Write-Host "running install-buildagent.ps1 "
 Get-Date
