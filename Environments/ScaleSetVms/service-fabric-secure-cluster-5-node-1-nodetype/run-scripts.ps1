@@ -10,8 +10,11 @@ Param
     $PoolName,
 
     [String]
-    $AgentName
-)
+    $AgentName,
+
+    [int]
+    $numClusterNodes
+    )
 
 
 function isNodeOne($ipAddress) {
@@ -20,7 +23,7 @@ function isNodeOne($ipAddress) {
 
 Start-Transcript -Path 'c:\logs\run-scripts-ps1-transcript.txt'
 
-& ($PSScriptRoot + "\install-couchbase.ps1")
+& ($PSScriptRoot + "\install-couchbase.ps1 -numClusterNodes " + $numClusterNodes)
 
 Write-Host "running install-buildagent.ps1 "
 Get-Date

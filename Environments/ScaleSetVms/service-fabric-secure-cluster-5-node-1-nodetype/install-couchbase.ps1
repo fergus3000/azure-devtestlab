@@ -1,3 +1,8 @@
+Param
+(
+    [int]
+    $numClusterNodes
+)
 
 function Log ($text) {
     $ts = Get-Date -Format "o"
@@ -131,7 +136,7 @@ function AddCouchbaseNode($ipAddress) {
     }
     Log("Node count is $nodesCount" )
 
-    if ($nodesCount -eq 5) {
+    if ($nodesCount -eq $numClusterNodes) {
         Log("Starting rebalance" )
         # start rebalance
         #curl -v -X POST -u Administrator:password \

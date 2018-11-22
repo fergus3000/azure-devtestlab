@@ -129,7 +129,6 @@
         "vaultSecret": "ClusterCertificate",
         "loadBalancedAppPort1": "[parameters('appPort1')]",
         "loadBalancedAppPort2": "[parameters('appPort2')]",
-        "nt0InstanceCount": "[parameters('clusterSize')]"
     },
     "resources": [
         {
@@ -213,7 +212,7 @@
                         "value": "[reference(resourceId('Microsoft.KeyVault/vaults/secrets', variables('vaultName'), variables('vaultSecret'))).secretUriWithVersion]"
                     },
                     "nt0InstanceCount": {
-                        "value": "[variables('nt0InstanceCount')]"
+                        "value": "[parameters('clusterSize')]"
                     },
                     "nodeDataDrive": {
                         "value": "OS"
@@ -291,7 +290,7 @@
                         "value": "[reference(resourceId('Microsoft.KeyVault/vaults/secrets', variables('vaultName'), variables('vaultSecret'))).secretUriWithVersion]"
                     },
                     "nt0InstanceCount": {
-                        "value": "[variables('nt0InstanceCount')]"
+                        "value": "[parameters('clusterSize')]"
                     }
                 }
             }
