@@ -83,7 +83,7 @@
         "clusterSize": {
             "type": "int",
             "defaultValue": 5,
-            "minValue": 5,
+            "minValue": 1,
             "metadata": {
                 "description": "Number of nodes in cluster"
             }
@@ -93,6 +93,13 @@
           "defaultValue": "Standard_D2_v2",
           "metadata": {
             "description": "The VM size to use for cluster nodes."
+          }
+        },
+        "reliabilityLevel": {
+          "type": "string",
+          "defaultValue": "Silver",
+          "metadata": {
+            "description": "The reliability level of the SF system servics"
           }
         },
         "vstsServerUrl": {
@@ -213,6 +220,9 @@
                     },
                     "nt0InstanceCount": {
                         "value": "[parameters('clusterSize')]"
+                    },
+                    "reliabilityLevel": {
+                        "value": "[parameters('reliabilityLevel')]"
                     },
                     "nodeDataDrive": {
                         "value": "OS"

@@ -133,6 +133,13 @@
         "description": "The VM size to use for cluster nodes."
       }
     },
+    "reliabilityLevel": {
+      "type": "string",
+      "defaultValue": "Silver",
+      "metadata": {
+        "description": "The reliability level of the SF system servics"
+      }
+    },
     "vstsServerUrl": {
       "type": "string",
       "metadata": {
@@ -450,7 +457,7 @@
         "typeHandlerVersion": "1.9",
         "autoUpgradeMinorVersion": true,
         "protectedSettings": {
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File run-scripts.ps1 -ServerUrl ', parameters('vstsServerUrl'), ' -PersonalAccessToken ', parameters('vstsPersonalAccessToken'), ' -PoolName ', parameters('vstsAgentPoolName'), ' -AgentName ', parameters('vstsAgentName'))]"
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File run-scripts.ps1 -ServerUrl ', parameters('vstsServerUrl'), ' -PersonalAccessToken ', parameters('vstsPersonalAccessToken'), ' -PoolName ', parameters('vstsAgentPoolName'), ' -AgentName ', parameters('vstsAgentName'))]' -numClusterNodes ', parameters('nt0InstanceCount'))]"
         },
         "type": "CustomScriptExtension"
       }
@@ -615,7 +622,7 @@
       },
       "sku": {
         "name": "[variables('vmNodeType0Size')]",
-        "capacity": 10,
+        "capacity": "[parameters('nt0InstanceCount')]",
         "tier": "Standard"
       },
       "tags": {
@@ -671,7 +678,7 @@
           "vmInstanceCount": 10
         }],
         "provisioningState": "Default",
-        "reliabilityLevel": "Platinum",
+        "reliabilityLevel": "[parameters('reliabilityLevel')]",
         "upgradeMode": "Automatic",
         "vmImage": "Windows"
       },
