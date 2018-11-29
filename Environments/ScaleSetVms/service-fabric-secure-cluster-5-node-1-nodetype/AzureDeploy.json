@@ -457,7 +457,7 @@
         "typeHandlerVersion": "1.9",
         "autoUpgradeMinorVersion": true,
         "protectedSettings": {
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File run-scripts.ps1 -ServerUrl ', parameters('vstsServerUrl'), ' -PersonalAccessToken ', parameters('vstsPersonalAccessToken'), ' -PoolName ', parameters('vstsAgentPoolName'), ' -AgentName ', parameters('vstsAgentName'))]' -numClusterNodes ', parameters('nt0InstanceCount'))]"
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File run-scripts.ps1 -ServerUrl ', parameters('vstsServerUrl'), ' -PersonalAccessToken ', parameters('vstsPersonalAccessToken'), ' -PoolName ', parameters('vstsAgentPoolName'), ' -AgentName ', parameters('vstsAgentName'), ' -numClusterNodes ', parameters('nt0InstanceCount'))]"
         },
         "type": "CustomScriptExtension"
       }
