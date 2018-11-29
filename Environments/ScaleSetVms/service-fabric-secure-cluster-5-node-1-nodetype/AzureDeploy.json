@@ -675,7 +675,7 @@
           },
           "httpGatewayEndpointPort": "[variables('nt0fabricHttpGatewayPort')]",
           "isPrimary": true,
-          "vmInstanceCount": 10
+          "vmInstanceCount": "[parameters('nt0InstanceCount')]"
         }],
         "provisioningState": "Default",
         "reliabilityLevel": "[parameters('reliabilityLevel')]",
