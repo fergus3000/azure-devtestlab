@@ -185,7 +185,8 @@ function ConfigureCouchbase ($ipAddress) {
 
     # assign half of memory to couchbase
     $PysicalMemory = Get-WmiObject -class "win32_physicalmemory" -namespace "root\CIMV2"
-    [int] $memoryQuota = ($PysicalMemory).Capacity / 2000
+    [int] $megaBytes = (($PysicalMemory).Capacity |  Measure-Object -Sum).Sum / 1048576
+    [int] $memoryQuota = $megaBytes / 2
     [int] $wfmsQuota = 256
     [int] $eventsQuota = 512
     [int] $tsQuota = $memoryQuota - $eventsQuota - $wfmsQuota
