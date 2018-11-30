@@ -183,12 +183,19 @@ function ConfigureCouchbase ($ipAddress) {
         -Body "hostname=10.0.0.4" `
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
+    # assign half of memory to couchbase
+    $PysicalMemory = Get-WmiObject -class "win32_physicalmemory" -namespace "root\CIMV2"
+    [int] $memoryQuota = ($PysicalMemory).Capacity / 2000
+    [int] $wfmsQuota = 256
+    [int] $eventsQuota = 512
+    [int] $tsQuota = $memoryQuota - $eventsQuota - $wfmsQuota
+
     #echo Configuring Couchbase cluster
     #curl -v -X POST http://127.0.0.1:8091/pools/default -d memoryQuota=1024 -d indexMemoryQuota=512
     Invoke-WebRequest -Method POST `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/pools/default `
-        -Body "memoryQuota=5502&indexMemoryQuota=512" `
+        -Body "memoryQuota=$memoryQuota&indexMemoryQuota=512" `
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
     #echo Configuring Couchbase indexes
@@ -212,19 +219,19 @@ function ConfigureCouchbase ($ipAddress) {
     Invoke-WebRequest -Method POST `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/pools/default/buckets `
-        -Body "name=wfms&replicaIndex=0&flushEnabled=1&bucketType=couchbase&ramQuotaMB=512&authType=sasl&saslPassword=password" `
+        -Body "name=wfms&replicaIndex=0&flushEnabled=1&bucketType=couchbase&ramQuotaMB=$wfmsQuota&authType=sasl&saslPassword=password" `
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
     #curl -v -u Administrator:password -X POST http://127.0.0.1:8091/pools/default/buckets -d name=timeseries -d replicaIndex=0 -d flushEnabled=1 -d bucketType=couchbase -d ramQuotaMB=512 -d authType=sasl -d saslPassword=password
     Invoke-WebRequest -Method POST `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/pools/default/buckets `
-        -Body "name=timeseries&replicaIndex=0&flushEnabled=1&bucketType=couchbase&ramQuotaMB=4096&authType=sasl&saslPassword=password" `
+        -Body "name=timeseries&replicaIndex=0&flushEnabled=1&bucketType=couchbase&ramQuotaMB=$tsQuota&authType=sasl&saslPassword=password" `
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
     #curl -v -u Administrator:password -X POST http://127.0.0.1:8091/pools/default/buckets -d name=events -d replicaIndex=0 -d flushEnabled=1 -d bucketType=couchbase -d ramQuotaMB=256 -d authType=sasl -d saslPassword=password
     Invoke-WebRequest -Method POST `
         -Headers $headers `
         -Uri http://127.0.0.1:8091/pools/default/buckets `
-        -Body "name=events&replicaIndex=0&flushEnabled=1&bucketType=couchbase&ramQuotaMB=256&authType=sasl&saslPassword=password" `
+        -Body "name=events&replicaIndex=0&flushEnabled=1&bucketType=couchbase&ramQuotaMB=$eventsQuota&authType=sasl&saslPassword=password" `
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
     #echo Creating Couchbase bucket users
