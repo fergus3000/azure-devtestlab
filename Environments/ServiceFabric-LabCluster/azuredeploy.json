@@ -263,7 +263,7 @@
                     "clusterName": {
                         "value": "[parameters('clusterName')]"
                     },
-                    "clusterLocation": {
+                    "location": {
                         "value": "[parameters('clusterLocation')]"
                     },
                     "adminUsername": {

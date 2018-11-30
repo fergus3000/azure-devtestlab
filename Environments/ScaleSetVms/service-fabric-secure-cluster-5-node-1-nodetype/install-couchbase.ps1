@@ -58,6 +58,8 @@ function AddCouchbaseNode($ipAddress) {
         -Body ("hostname=" + $ipAddress) `
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
+    #The quota and rename does not seem to matter on the secondary nodes
+
     #echo Configuring Couchbase cluster
     #curl -v -X POST http://127.0.0.1:8091/pools/default -d memoryQuota=1024 -d indexMemoryQuota=512
     Invoke-WebRequest -Method POST `
@@ -138,6 +140,14 @@ function AddCouchbaseNode($ipAddress) {
 
     if ($nodesCount -eq $numClusterNodes) {
         Log("Starting rebalance" )
+
+        $nodesCount = 3
+        $knownNodes = "knownNodes=ns_1@10.0.0.4"
+        For ($i=1; $i -lt $nodesCount; $i++) {
+            $ip = $i+4
+            $knownNodes = "$knownNodes,ns_1@10.0.0.$ip"
+        }
+
         # start rebalance
         #curl -v -X POST -u Administrator:password \
         #'http://192.168.0.77:8091/controller/rebalance'\
@@ -145,7 +155,7 @@ function AddCouchbaseNode($ipAddress) {
         $response = Invoke-WebRequest -Method POST `
             -Headers $headers `
             -Uri http://10.0.0.4:8091/controller/rebalance `
-            -Body "knownNodes=ns_1@10.0.0.4,ns_1@10.0.0.5,ns_1@10.0.0.6,ns_1@10.0.0.7,ns_1@10.0.0.8" `
+            -Body $knownNodes `
             -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
         Log("Starting rebalance result $response" )
