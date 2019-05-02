@@ -167,7 +167,7 @@
   },
   "variables": {
     "dnsName": "[parameters('clusterName')]",
-    "vmName": "vm",
+    "vmName": "glr-sf",
     "virtualNetworkName": "[concat('VNet-',parameters('clusterName'))]",
     "addressPrefix": "10.0.0.0/16",
     "nicName": "NIC",
