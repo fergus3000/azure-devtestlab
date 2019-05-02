@@ -1,0 +1,6 @@
+{
+  "itemDisplayName": "Service Fabric Lab Cluster AppInsights",
+  "githubUsername": "Microsoft",
+  "description": "A secure multi node, single nodetype Service fabric Cluster.",
+  "summary": "This template allows you to deploy a secure multi node, Single Node Type Service fabric Cluster running Ubuntu 16.04 or Windows Server 2016 on Standard_D2_v2 Size VMs with Windows Azure diagnostics, and App Insights turned on."
+}
