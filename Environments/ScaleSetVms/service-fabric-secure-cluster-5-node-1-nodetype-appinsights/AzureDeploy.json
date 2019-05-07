@@ -564,6 +564,10 @@
                             {
                                 "name": "applicationInsights",
                                 "ApplicationInsights": "[parameters('applicationInsightsKey')]"
+                            },
+                            {
+                              "name": "applicationInsightsProfiler",
+                              "ApplicationInsightsProfiler": "[parameters('applicationInsightsKey')]"
                             }
                         ]
                       }
