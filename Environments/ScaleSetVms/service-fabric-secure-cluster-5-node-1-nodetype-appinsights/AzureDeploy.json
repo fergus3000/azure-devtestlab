@@ -675,7 +675,41 @@
             "value": "[parameters('clusterProtectionLevel')]"
           }],
           "name": "Security"
-        }],
+        },
+        {
+          "name": "EventStoreService",
+          "parameters": [{
+            "name": "TargetReplicaSetSize",
+            "value": "3"
+          },
+          {
+            "name": "MinReplicaSetSize",
+            "value": "1"
+          },
+          {
+            "name": "PlacementConstraints",
+            "value": "(NodeType==[variables('vmNodeType0Name')])"
+          }]
+        }
+        ],
+        "upgradeDescription": {
+          "forceRestart": true,
+          "upgradeReplicaSetCheckTimeout": "10675199.02:48:05.4775807",
+          "healthCheckWaitDuration": "00:01:00",
+          "healthCheckStableDuration": "00:01:00",
+          "healthCheckRetryTimeout": "00:5:00",
+          "upgradeTimeout": "1:00:00",
+          "upgradeDomainTimeout": "00:10:00",
+          "healthPolicy": {
+            "maxPercentUnhealthyNodes": 100,
+            "maxPercentUnhealthyApplications": 100
+          },
+          "deltaHealthPolicy": {
+            "maxPercentDeltaUnhealthyNodes": 0,
+            "maxPercentUpgradeDomainDeltaUnhealthyNodes": 0,
+            "maxPercentDeltaUnhealthyApplications": 0
+          }
+        },
         "managementEndpoint": "[concat('https://',reference(variables('lbIPName')).dnsSettings.fqdn,':',variables('nt0fabricHttpGatewayPort'))]",
         "nodeTypes": [{
           "name": "[variables('vmNodeType0Name')]",
