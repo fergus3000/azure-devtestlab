@@ -675,6 +675,21 @@
             "value": "[parameters('clusterProtectionLevel')]"
           }],
           "name": "Security"
+        },
+		{
+          "name": "EventStoreService",
+          "parameters": [{
+            "name": "TargetReplicaSetSize",
+            "value": "3"
+          },
+          {
+            "name": "MinReplicaSetSize",
+            "value": "1"
+          },
+          {
+            "name": "PlacementConstraints",
+            "value": "(NodeType==[variables('vmNodeType0Name')])"
+          }]
         }],
         "managementEndpoint": "[concat('https://',reference(variables('lbIPName')).dnsSettings.fqdn,':',variables('nt0fabricHttpGatewayPort'))]",
         "nodeTypes": [{
