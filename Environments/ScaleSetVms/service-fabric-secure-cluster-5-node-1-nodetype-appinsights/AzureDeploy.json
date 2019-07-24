@@ -471,6 +471,9 @@
       "type": "Microsoft.Compute/virtualMachineScaleSets",
       "name": "[variables('vmNodeType0Name')]",
       "location": "[parameters('location')]",
+      "identity": {
+        "type": "systemAssigned"
+      },
       "dependsOn": [
         "[variables('virtualNetworkName')]",
         "[variables('lbName')]",
@@ -510,6 +513,19 @@
                 }
               },
               {
+                "name": "VMSS-WAD-extension",
+                "properties": {
+                  "publisher": "Microsoft.ManagedIdentity",
+                  "type": "ManagedIdentityExtensionForWindows",
+                  "typeHandlerVersion": "1.0",
+                  "autoUpgradeMinorVersion": true,
+                  "settings": {
+                    "port": 50342
+                  },
+                  "protectedSettings": {}
+                }
+              },
+              {
                 "name": "[concat('VMDiagnosticsVmExt','_vmNodeType0Name')]",
                 "properties": {
                   "type": "IaaSDiagnostics",
@@ -524,6 +540,20 @@
                     "WadCfg": {
                       "DiagnosticMonitorConfiguration": {
                         "overallQuotaInMB": "50000",
+                        "PerformanceCounters": {
+                          "scheduledTransferPeriod": "PT5M",
+                          "sinks": "AzMonSink",
+                          "PerformanceCounterConfiguration": [
+                            {
+                              "counterSpecifier": "\\LogicalDisk(C:)\\Free Megabytes",
+                              "sampleRate": "PT5M"
+                            },
+                            {
+                              "counterSpecifier": "\\LogicalDisk(C:)\\% Free Space",
+                              "sampleRate": "PT5M"
+                            }
+                          ]
+                        },
                         "EtwProviders": {
                           "EtwEventSourceProviderConfiguration": [{
                               "provider": "Microsoft-ServiceFabric-Actors",
@@ -568,6 +598,10 @@
                             {
                               "name": "applicationInsightsProfiler",
                               "ApplicationInsightsProfiler": "[parameters('applicationInsightsKey')]"
+                            },
+                            {
+                                "name": "AzMonSink",
+                                "AzureMonitor": {}
                             }
                         ]
                       }
