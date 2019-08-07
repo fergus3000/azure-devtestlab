@@ -468,6 +468,9 @@
       "type": "Microsoft.Compute/virtualMachineScaleSets",
       "name": "[variables('vmNodeType0Name')]",
       "location": "[parameters('location')]",
+	  "identity": {
+        "type": "systemAssigned"
+      },
       "dependsOn": [
         "[variables('virtualNetworkName')]",
         "[variables('lbName')]",
@@ -506,6 +509,19 @@
                   "typeHandlerVersion": "1.0"
                 }
               },
+			  {
+                "name": "VMSS-WAD-extension",
+                "properties": {
+                  "publisher": "Microsoft.ManagedIdentity",
+                  "type": "ManagedIdentityExtensionForWindows",
+                  "typeHandlerVersion": "1.0",
+                  "autoUpgradeMinorVersion": true,
+                  "settings": {
+                    "port": 50342
+                  },
+                  "protectedSettings": {}
+                }
+              },
               {
                 "name": "[concat('VMDiagnosticsVmExt','_vmNodeType0Name')]",
                 "properties": {
@@ -521,6 +537,20 @@
                     "WadCfg": {
                       "DiagnosticMonitorConfiguration": {
                         "overallQuotaInMB": "50000",
+						"PerformanceCounters": {
+                          "scheduledTransferPeriod": "PT5M",
+                          "sinks": "AzMonSink",
+                          "PerformanceCounterConfiguration": [
+                            {
+                              "counterSpecifier": "\\LogicalDisk(C:)\\Free Megabytes",
+                              "sampleRate": "PT5M"
+                            },
+                            {
+                              "counterSpecifier": "\\LogicalDisk(C:)\\% Free Space",
+                              "sampleRate": "PT5M"
+                            }
+                          ]
+                        },
                         "EtwProviders": {
                           "EtwEventSourceProviderConfiguration": [{
                               "provider": "Microsoft-ServiceFabric-Actors",
@@ -555,6 +585,14 @@
                             }
                           }]
                         }
+                      },
+					  "SinksConfig": {
+                        "Sink": [                            
+                            {
+                                "name": "AzMonSink",
+                                "AzureMonitor": {}
+                            }
+                        ]
                       }
                     },
                     "StorageAccount": "[variables('applicationDiagnosticsStorageAccountName')]"
