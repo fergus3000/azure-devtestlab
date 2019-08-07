@@ -178,7 +178,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/Raj-KDI/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/AzureDeploy.json",
+                    "uri": "https://raw.githubusercontent.com/fergus3000/azure-devtestlab/master/Environments/ScaleSetVms/service-fabric-secure-cluster-5-node-1-nodetype/AzureDeploy.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
