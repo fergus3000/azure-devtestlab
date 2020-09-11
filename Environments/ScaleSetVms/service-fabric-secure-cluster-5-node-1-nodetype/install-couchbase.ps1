@@ -20,11 +20,11 @@ function CreateLogsFolder {
 function InstallCouchbase {
 
     #assume msi downloaded from in current folder
-    #https://packages.couchbase.com/releases/5.1.1/couchbase-server-community_5.1.1-windows_amd64.msi
+    #https://packages.couchbase.com/releases/6.6.0/couchbase-server-community_6.6.0-windows_amd64.msi
     $logFile = "c:\logs\cb-install.log"
     $MSIArguments = @(
         "/i"
-        "couchbase-server-community_5.1.1-windows_amd64.msi"
+        "couchbase-server-community_6.6.0-windows_amd64.msi"
         "/qn"
         "/norestart"
         "/L*v"
