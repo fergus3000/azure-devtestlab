@@ -30,7 +30,7 @@ if (isNodeOne($ipAddress)) {
     mkdir c:\agent
     Set-Location c:\agent
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    [System.IO.Compression.ZipFile]::ExtractToDirectory("$CurDir\vsts-agent-win-x64-2.140.0.zip", "$PWD")
+    [System.IO.Compression.ZipFile]::ExtractToDirectory("$CurDir\vsts-agent-win-x64-2.177.1.zip", "$PWD")
 
     .\config.cmd --unattended --url $ServerUrl --auth PAT --token $PersonalAccessToken --pool $PoolName --agent $AgentName --runasservice --replace
 
