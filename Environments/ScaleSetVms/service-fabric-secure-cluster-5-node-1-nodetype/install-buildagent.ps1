@@ -36,11 +36,10 @@ if (isNodeOne($ipAddress)) {
 
     Set-Location $CurDir
 
-    Write-Host "Installing .net core sdk "
+    Write-Host "Installing .net core 3.1 sdk "
     Get-Date
 
-    ./dotnet-sdk-2.1.401-win-x64.exe /install /quiet /norestart /log "c:\logs\Dotnet Core SDK 2.1.401.log"
-    #Start-Process -FilePath "./dotnet-sdk-2.1.401-win-x64.exe" -ArgumentList "/install /norestart /quiet /log 'c:\logs\Dotnet Core SDK 2.1.105.log'" -PassThru -Wait
+    ./dotnet-sdk-3.1.404-win-x64.exe /install /quiet /norestart /log "c:\logs\Dotnet Core SDK 3.1.404.log"
 
     Write-Host "Done installing .net core sdk "
     Get-Date
