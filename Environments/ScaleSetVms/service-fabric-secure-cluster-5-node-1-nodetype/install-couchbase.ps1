@@ -20,11 +20,11 @@ function CreateLogsFolder {
 function InstallCouchbase {
 
     #assume msi downloaded from in current folder
-    #https://packages.couchbase.com/releases/6.6.0/couchbase-server-community_6.6.0-windows_amd64.msi
+    #https://packages.couchbase.com/releases/6.5.1/couchbase-server-community_6.5.1-windows_amd64.msi
     $logFile = "c:\logs\cb-install.log"
     $MSIArguments = @(
         "/i"
-        "couchbase-server-community_6.6.0-windows_amd64.msi"
+        "couchbase-server-community_6.5.1-windows_amd64.msi"
         "/qn"
         "/norestart"
         "/L*v"
@@ -34,7 +34,7 @@ function InstallCouchbase {
 
     New-NetFirewallRule -DisplayName "Couchbase" -Direction Inbound -Action Allow -Protocol TCP `
         -EdgeTraversalPolicy Allow `
-        -LocalPort 4369, 8091-8096, 9100-9105, 9110-9118, 9119, 9120-9122, 9998, 9999, 11209, 11210, 11213, 21100-21299
+        -LocalPort 4369, 8091-8096, 9100-9105, 9110-9118, 9119, 9120-9122, 9130, 9998, 9999, 11207, 11209, 11210, 11213, 18091-18094, 19130, 21100-21300
 }
 
 function isNodeOne($ipAddress) {
@@ -193,10 +193,10 @@ function ConfigureCouchbase ($ipAddress) {
         -Body "hostname=10.0.0.4" `
         -ContentType application/x-www-form-urlencoded -UseBasicParsing
 
-    # assign half of memory to couchbase
+    # assign 1/3 memory to couchbase
     $PysicalMemory = Get-WmiObject -class "win32_physicalmemory" -namespace "root\CIMV2"
     [int] $megaBytes = (($PysicalMemory).Capacity |  Measure-Object -Sum).Sum / 1048576
-    [int] $memoryQuota = $megaBytes / 2
+    [int] $memoryQuota = $megaBytes / 3
     [int] $wfmsQuota = 256
     [int] $eventsQuota = 512
     [int] $tsQuota = $memoryQuota - $eventsQuota - $wfmsQuota
@@ -300,6 +300,6 @@ else {
 }
 
 # prevent antimalware from scanning some folders
-Set-MpPreference -ExclusionPath "C:\logs", "C:\Program Files\Couchbase\Server\var\lib\couchbase"
+Set-MpPreference -ExclusionPath "C:\logs", "C:\Program Files\Couchbase\Server"
 
 Stop-Transcript
