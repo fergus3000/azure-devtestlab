@@ -203,7 +203,18 @@
         "location": "[parameters('location')]",
         "dependsOn": [],
         "properties": {
-            "supportsHttpsTrafficOnly": "true"
+            "azureFilesIdentityBasedAuthentication": {
+                "directoryServiceOptions": "AADDS"
+            },
+            "minimumTlsVersion": "TLS1_2",
+            "allowBlobPublicAccess": false,
+            "networkAcls": {
+                "bypass": "AzureServices",
+                "virtualNetworkRules": [],
+                "ipRules": [],
+                "defaultAction": "Allow"
+            },
+            "supportsHttpsTrafficOnly": true,
         },
         "kind": "Storage",
         "sku": {
@@ -221,7 +232,18 @@
         "location": "[parameters('location')]",
         "dependsOn": [],
         "properties": {
-            "supportsHttpsTrafficOnly": "true"
+            "azureFilesIdentityBasedAuthentication": {
+                "directoryServiceOptions": "AADDS"
+            },
+            "minimumTlsVersion": "TLS1_2",
+            "allowBlobPublicAccess": false,
+            "networkAcls": {
+                "bypass": "AzureServices",
+                "virtualNetworkRules": [],
+                "ipRules": [],
+                "defaultAction": "Allow"
+            },
+            "supportsHttpsTrafficOnly": true,
         },
         "kind": "Storage",
         "sku": {
