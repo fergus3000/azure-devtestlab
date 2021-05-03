@@ -202,7 +202,9 @@
         "name": "[variables('supportLogStorageAccountName')]",
         "location": "[parameters('location')]",
         "dependsOn": [],
-        "properties": {},
+        "properties": {
+            "supportsHttpsTrafficOnly": "true"
+        },
         "kind": "Storage",
         "sku": {
           "name": "Standard_LRS"
@@ -218,7 +220,9 @@
         "name": "[variables('applicationDiagnosticsStorageAccountName')]",
         "location": "[parameters('location')]",
         "dependsOn": [],
-        "properties": {},
+        "properties": {
+            "supportsHttpsTrafficOnly": "true"
+        },
         "kind": "Storage",
         "sku": {
           "name": "Standard_LRS"
